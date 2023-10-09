@@ -1,4 +1,4 @@
-
+let BASE_URL = 'http://localhost:8082/pos/';
 //load all items from the database
 loadAllItems();
 loadAllCustomers();

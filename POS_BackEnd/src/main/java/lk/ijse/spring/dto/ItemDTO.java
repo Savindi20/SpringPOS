@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -14,6 +16,6 @@ public class ItemDTO {
     private String code;
     private String description;
     private int qtyOnHand;
-    private double unitPrice;
+    private BigDecimal unitPrice;
 
 }

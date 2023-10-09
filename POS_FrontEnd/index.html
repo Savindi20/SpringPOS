@@ -78,7 +78,7 @@
 
 </main>
 
-<!--Customer Content-->
+<!--customer content-->
 <main class="container-fluid" id="customerContent">
     <section class="row">
         <div class="col-12 col-lg-4">
@@ -86,25 +86,32 @@
             <form id="customerForm">
                 <div class="form-group">
                     <label for="txtCustomerID">Customer ID</label>
-                    <input name="cusID" class="form-control" id="txtCustomerID" required type="text">
+                    <input name="id" class="form-control" id="txtCustomerID" type="text">
                     <span class="control-error" id="lblcusid"></span>
                 </div>
                 <div class="form-group">
                     <label for="txtCustomerName">Customer Name</label>
-                    <input name="cusName" class="form-control" id="txtCustomerName" type="text">
+                    <input name="name" class="form-control" id="txtCustomerName" type="text">
                     <span class="control-error" id="lblcusname"></span>
                 </div>
                 <div class="form-group">
                     <label for="txtCustomerAddress">Customer Address</label>
-                    <input name="cusAddress" class="form-control" id="txtCustomerAddress" type="text">
+                    <input name="address" class="form-control" id="txtCustomerAddress" type="text">
                     <span class="control-error" id="lblcusaddress"></span>
                 </div>
+
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary" id="btnCustomer">Save Customer</button>
-                    <button type="button" class="btn btn-danger" id="btnCusDelete">Remove</button>
-                    <button type="button" class="btn btn-warning" id="btnUpdate">Update</button>
+                    <button type="button" class="btn btn-primary" id="btnCustomer">
+                        Save Customer
+                    </button>
+                    <button type="button" class="btn btn-danger"
+                            id="btnCusDelete">Remove
+                    </button>
+                    <button type="button" class="btn btn-warning"
+                            id="btnUpdate">Update
+                    </button>
                     <button type="button" class="btn btn-success" id="btnGetAll">Get All</button>
-                    <button type="button" class="btn btn-danger" id="btn-clear1">Clear All</button>
+                    <button type="button" class="btn btn-danger" id="btnClear">Clear All</button>
                 </div>
             </form>
         </div>
@@ -125,7 +132,7 @@
     </section>
 </main>
 
-<!--Item Content-->
+<!--item content-->
 <main class="container-fluid" id="itemContent">
     <section class="row">
         <div class="col-12 col-lg-4">
@@ -143,7 +150,7 @@
                 </div>
                 <div class="form-group">
                     <label for="itemQty">Item Qty</label>
-                    <input name="itemQty" class="form-control" id="itemQty" type="text">
+                    <input name="qtyOnHand" class="form-control" id="itemQty" type="text">
                     <span class="control-error" id="lblqty"></span>
                 </div>
                 <div class="form-group">
@@ -151,14 +158,15 @@
                     <input name="unitPrice" class="form-control" id="itemPrice" type="text">
                     <span class="control-error" id="lblprice"></span>
                 </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary" id="btnItem">Add Item</button>
-                    <button type="button" class="btn btn-danger" id="btnItemDelete">Remove</button>
-                    <button type="button" class="btn btn-warning" id="btnItemUpdate">Update</button>
-                    <button type="button" class="btn btn-success" id="itemGetAll">Get All</button>
-                    <button type="button" class="btn btn-danger" id="btn-clear">Clear All</button>
-                </div>
             </form>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" id="btnItem">Add Item</button>
+                <button type="button" class="btn btn-danger" id="btnItemDelete">Remove</button>
+                <button type="button" class="btn btn-warning" id="btnItemUpdate">Update</button>
+                <button type="button" class="btn btn-success" id="btnGetAllItems">Get All</button>
+                <button type="reset" class="btn btn-danger" id="btnClear">Clear All</button>
+            </div>
+
         </div>
         <div class="col-12 col-lg-8 mt-3">
             <table class="table table-bordered table-hover">
@@ -210,17 +218,34 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Customer :</label>
-                                            <input class="form-control" id="selectCusID" type="text">
+                                            <select class="form-control" id="selectCusID">
+                                                <option value="1">A</option>
+                                                <option value="2">B</option>
+                                            </select>
+                                            <span class="control-error"
+                                                  id="cus-empty-error"></span>
                                         </div>
                                     </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="orderCustomerID">Customer ID</label>
+                                            <input class="form-control" id="orderCustomerID">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Name :</label>
                                             <input class="form-control" id="orderCustomerName" type="text">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Salary :</label>
+                                            <input class="form-control" id="orderCustomerSalary" type="text">
+                                        </div>
+                                    </div>
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label>Address :</label>
@@ -246,31 +271,33 @@
                                                   id="item-empty-error"></span>
                                         </div>
                                     </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Item Code :</label>
+                                            <input class="form-control" id="txtItemCode" type="text">
+                                        </div>
+                                    </div>
                                     <div class="col-5">
                                         <div class="form-group">
                                             <label>Item Name :</label>
                                             <input class="form-control" id="txtItemDescription" type="text">
                                         </div>
                                     </div>
-                                    <div class="col-5">
+                                    <div class="col-4">
                                         <div class="form-group">
                                             <label class="">Price :</label>
                                             <input class="form-control" id="txtItemPrice" type="text">
                                         </div>
                                     </div>
-                                    <div class="col-5">
+                                    <div class="col-3">
                                         <div class="form-group">
                                             <label class="">QtyOnH :</label>
                                             <input class="form-control" id="txtQTYOnHand" type="text">
                                         </div>
                                     </div>
-                                    <div class="col-5">
-                                        <div class="form-group">
-                                            <label>Total Of Item :</label>
-                                            <input class="form-control" id="TotalOfItem" min="1" type="number">
-                                        </div>
-                                    </div>
-                                    <div class="col-5">
+                                    <hr>
+                                    <hr>
+                                    <div class="col-12 mt-4">
                                         <div class="form-group">
                                             <label>Order Quantity :</label>
                                             <input class="form-control" id="txtQty" min="1" type="number">
@@ -347,7 +374,8 @@
                         <th>Item Code</th>
                         <th>Item Name</th>
                         <th>Price</th>
-                        <th>Qty</th>
+                        <th>Qty-On-Hand</th>
+                        <th>Buying Amount</th>
                         <th>Total</th>
                     </tr>
                     </thead>

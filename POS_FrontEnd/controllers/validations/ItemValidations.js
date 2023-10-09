@@ -1,108 +1,96 @@
-// validation for item
-const ITEM_CODE_REGEX = /^(I00-)[0-9]{3}$/;
-const ITEM_NAME_REGEX = /^[A-Za-z ]{3,}$/;
-const ITEM_QTY_REGEX = /^[0-9]+$/;
-const ITEM_PRICE_REGEX = /^[0-9]{2,}([.][0-9]{2})?$/;
+let isValidCode = false;
+let isValidItemName = false;
+let isValidQty = false;
+let isValidUnitPrice = false;
 
-//add validations and text fields to the
-let i_vArray = new Array();
-i_vArray.push({field: $("#itemCode"), regEx: ITEM_CODE_REGEX});
-i_vArray.push({field: $("#itemName"), regEx: ITEM_NAME_REGEX});
-i_vArray.push({field: $("#itemQty"), regEx: ITEM_QTY_REGEX});
-i_vArray.push({field: $("#itemPrice"), regEx: ITEM_PRICE_REGEX});
+function checkValidItem() {
+    isValidCode = isValid(regexItemCode, itemIDField.val());
+    isValidItemName = isValid(regexItemName, itemNameField.val());
+    isValidQty = isValid(regexQty, itemQtyField.val());
+    isValidUnitPrice = isValid(regexUnitPrice, itemUnitPriceField.val());
 
-function clearItemInputFields() {
-    $("#itemCode,#itemName,#itemQty,#itemPrice").val("");
-    $("#itemCode,#itemName,#itemQty,#itemPrice").css("border", "1px solid #ced4da");
-    $("#itemCode").focus();
-    setItemBtn();
+    return isValidCode && isValidItemName && isValidQty && isValidUnitPrice;
 }
 
-setItemBtn();
+// text fields
+let itemIDField = $('#txtItemCode');
+let itemNameField = $('#txtItemName');
+let itemQtyField = $('#txtItemQTY');
+let itemUnitPriceField = $('#txtItemPrice');
 
-//disable tab
-$("#itemCode,#itemName,#itemQty,#itemPrice").on("keydown keyup", function (e) {
-    //get the index number of data input fields indexNo
-    let indexNo = i_vArray.indexOf(i_vArray.find((c) => c.field.attr("id") == e.target.id));
+// regex patterns
+let regexItemCode = /^(I00-)[0-9]{3}$/;
+let regexItemName = /^[A-Za-z ]{5,}$/;
+let regexQty = /^[0-9]+$/;
+let regexUnitPrice= /^[0-9]+([.][0-9]{2})?$/;
 
-    //Disable tab key
-    if (e.key == "Tab") {
+//error labels
+let invalidItemIdMessage = $('#invalidCodeMessage');
+let invalidItemNameMessage = $('#invalidItemNameMessage');
+let invalidQtyMessage = $('#invalidItemQTYMessage');
+let invalidUnitPriceMessage = $('#invalidItemPriceMessage');
+
+//hide at beginning
+ItemFormHideErrorMessages()
+
+function ItemFormHideErrorMessages() {
+    invalidItemIdMessage.hide();
+    invalidItemNameMessage.hide();
+    invalidQtyMessage.hide();
+    invalidUnitPriceMessage.hide();
+}
+
+// keyup functions
+// Validate Code
+itemIDField.on('keyup', function () {
+    isValidCode = isValid(regexItemCode, itemIDField.val());
+    MakeChanges(isValidCode,itemIDField,invalidItemIdMessage);
+});
+
+// Validate Name
+itemNameField.on('keyup', function () {
+    isValidItemName = isValid(regexItemName, itemNameField.val());
+    MakeChanges(isValidItemName,itemNameField,invalidItemNameMessage);
+});
+
+// validate qty
+itemQtyField.on('keyup', function () {
+    isValidQty = isValid(regexQty, itemQtyField.val());
+    MakeChanges(isValidQty,itemQtyField,invalidQtyMessage);
+});
+
+// validate price
+itemUnitPriceField.on('keyup', function () {
+    isValidUnitPrice = isValid(regexUnitPrice, itemUnitPriceField.val());
+    MakeChanges(isValidUnitPrice,itemUnitPriceField,invalidUnitPriceMessage);
+});
+
+///////////////////////////////////////////////
+
+// disable tab
+$("#txtItemCode,#txtItemName,#txtItemQTY,#txtItemPrice").keydown(function (e) {
+    if (e.key === "Tab") {
         e.preventDefault();
-    }
-
-    //check validations
-    checkItemValidations(i_vArray[indexNo]);
-
-    setItemBtn();
-
-    //If the enter key pressed cheque and focus
-    if (e.key == "Enter") {
-
-        if (e.target.id != i_vArray[i_vArray.length - 1].field.attr("id")) {
-            //check validation is ok
-            if (checkItemValidations(i_vArray[indexNo])) {
-                i_vArray[indexNo + 1].field.focus();
-            }
-        } else {
-            if (checkItemValidations(i_vArray[indexNo])) {
-                saveItem();
-            }
-        }
     }
 });
 
-
-function checkItemValidations(object) {
-    if (object.regEx.test(object.field.val())) {
-        setItemBorder(true, object)
-        return true;
+// press enter to go next text fields (simulate tab)
+$("#txtItemCode").keydown(function (e){
+    if(e.key === "Enter"){
+        $('#txtItemName').focus();
     }
-    setItemBorder(false, object)
-    return false;
-}
+});
 
-function setItemBorder(bol, ob) {
-    if (!bol) {
-        if (ob.field.val().length >= 1) {
-            ob.field.css("border", "2px solid red");
-        } else {
-            ob.field.css("border", "1px solid #ced4da");
-        }
-    } else {
-        if (ob.field.val().length >= 1) {
-            ob.field.css("border", "2px solid green");
-        } else {
-            ob.field.css("border", "1px solid #ced4da");
-        }
+$("#txtItemName").keydown(function (e){
+    if(e.key === "Enter"){
+        $('#txtItemQTY').focus();
     }
+});
 
-}
-
-function checkAllItems() {
-    for (let i = 0; i < i_vArray.length; i++) {
-        if (!checkItemValidations(i_vArray[i])) return false;
+$("#txtItemQTY").keydown(function (e){
+    if(e.key === "Enter"){
+        $('#txtItemPrice').focus();
     }
-    return true;
-}
+});
 
-function setItemBtn() {
-    $("#btnItemDelete").prop("disabled", true);
-    $("#btnItemUpdate").prop("disabled", true);
-
-    if (checkAllItems()) {
-        $("#btnItem").prop("disabled", false);
-    } else {
-        $("#btnItem").prop("disabled", true);
-    }
-
-    let code = $("#itemCode").val();
-    if (searchItem(code) == undefined) {
-        $("#btnItemDelete").prop("disabled", true);
-        $("#btnItemUpdate").prop("disabled", true);
-    } else {
-        $("#btnItemDelete").prop("disabled", false);
-        $("#btnItemUpdate").prop("disabled", false);
-    }
-
-}
 
