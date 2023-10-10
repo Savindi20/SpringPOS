@@ -233,7 +233,7 @@
 <script src="assets/js/jquery-3.7.0.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script>
-    let BASE_URL="http://localhost:8082/pos/";
+    let BASE_URL="http://localhost:8082/jpa/";
 
     loadAllItems();
     loadAllCustomers();
@@ -359,7 +359,7 @@
         let orderID = $("#txtOrderID").val();
         let customerID = $("#orderCustomerID").val();
         let orderDate = $("#txtDate").val();
-        let orderD = getItemDetails();
+        let orderD = getItemDetails(orderID);
 
         let ob = {
             oid: orderID,
@@ -390,7 +390,7 @@
 
     });
 
-    function getItemDetails() {
+    function getItemDetails(orderID) {
         let rows = $("#orderTable").children().length;
         var array = [];
         for (let i = 0; i < rows; i++) {
@@ -398,7 +398,7 @@
             let avQty = $("#orderTable").children().eq(i).children(":eq(3)").text();
             let itQty = $("#orderTable").children().eq(i).children(":eq(4)").text();
             let itPrice = $("#orderTable").children().eq(i).children(":eq(2)").text();
-            array.push({code: itCode,avQty:avQty, qty: itQty, price: itPrice});
+            array.push({oid:orderID, code: itCode,avQty:avQty, qty: itQty, price: itPrice});
         }
         return array;
     }
