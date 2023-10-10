@@ -1,7 +1,10 @@
 package lk.ijse.spring.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -18,30 +21,35 @@ import javax.sql.DataSource;
 @Configuration
 @EnableJpaRepositories(basePackages = "lk.ijse.spring.repo")
 @EnableTransactionManagement
+@PropertySource("classpath:application.properties")
 public class JPAConfig {
+
+    @Autowired
+    Environment environment;
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource ds, JpaVendorAdapter vad) {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(ds);
         factory.setJpaVendorAdapter(vad);
-        factory.setPackagesToScan("lk.ijse.spring.entity"); // set entity locations
+        factory.setPackagesToScan(environment.getRequiredProperty("spring.entity")); // set entity locations
         return factory;
     }
 
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setUsername("root");
-        ds.setPassword("1234");
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://localhost:3306/d2?createDatabaseIfNotExist=true");
+        ds.setUsername(environment.getRequiredProperty("spring.username"));
+        ds.setPassword(environment.getRequiredProperty("spring.password"));
+        ds.setDriverClassName(environment.getRequiredProperty("spring.driver"));
+        ds.setUrl(environment.getRequiredProperty("spring.url"));
         return ds;
     }
 
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter va = new HibernateJpaVendorAdapter();
-        va.setDatabasePlatform("org.hibernate.dialect.MySQL8Dialect");
+        va.setDatabasePlatform(environment.getRequiredProperty("spring.dial"));
         va.setDatabase(Database.MYSQL);
         va.setGenerateDdl(true);
         va.setShowSql(true);
