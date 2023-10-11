@@ -51,4 +51,9 @@ public class CustomerServiceImpl implements CustomerService {
         if (!repo.existsById(id)) throw new RuntimeException("Error, customer is not exists!");
         return mapper.map(repo.findById(id), CustomerDTO.class);
     }
+
+    @Override
+    public CustomerDTO searchCustomerWithName(String name) {
+        return mapper.map(repo.findCustomerByName(name), CustomerDTO.class);
+    }
 }

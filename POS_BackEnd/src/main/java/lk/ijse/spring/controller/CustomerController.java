@@ -42,4 +42,9 @@ public class CustomerController {
     public ResponseUtil findCustomer(String id) {
         return new ResponseUtil("Ok", "successfully searched", service.findCustomer(id));
     }
+
+    @GetMapping(path = "/{name}")
+    public ResponseUtil searchCustomerByName(@PathVariable String name) {
+        return new ResponseUtil("Ok", "successfully loaded", service.searchCustomerWithName(name));
+    }
 }
